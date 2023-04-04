@@ -54,7 +54,7 @@ const PhoneBookScreen = () => {
   const [searchText, setSearchText] = useState('');
   const handleAddUser = () => {
     if (!name || !surname || !phone) {
-      Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
+      Alert.alert('Error', 'Please fill out all fields.');
       return;
     }
     const newUser = {
@@ -73,7 +73,7 @@ const PhoneBookScreen = () => {
     setName('');
     setSurname('');
     setPhone('');
-    Alert.alert('Başarılı', 'Yeni kişi başarıyla eklendi.');
+    Alert.alert('Success', 'New contact added successfully.');
   };
   const handlePlusButtonPress = () => {
     setIsFormOpen(true);
@@ -93,6 +93,7 @@ const PhoneBookScreen = () => {
   };
   const flatListRef = React.useRef();
   const [modalVisible, setModalVisible] = useState(false);
+  
 
   const handleDeleteUser = () => {
     const newData = rehberData.filter(item => item.id !== modalData.id);
