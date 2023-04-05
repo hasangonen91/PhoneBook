@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -15,101 +15,143 @@ import PhoneCallSvg from '../../assets/Svg/phonecall.svg';
 import UserSvg from '../../assets/Svg/user.svg';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
+import axios from 'axios';
+
 const {width, height} = Dimensions.get('window');
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+const jwtToken =
+  'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE';
+
 const PhoneBookScreen = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [rehberData, setRehberData] = useState([
-    { id: '1', name: 'Ahmet', surname: 'Yılmaz', phone: '555-123-4567' },
-    { id: '2', name: 'Ayşe', surname: 'Kara', phone: '555-234-5678' },
-    { id: '3', name: 'Ali', surname: 'Güneş', phone: '555-345-6789' },
-    { id: '4', name: 'Cemal', surname: 'Kaya', phone: '555-456-7890' },
-    { id: '5', name: 'Deniz', surname: 'Çelik', phone: '555-567-8901' },
-    { id: '6', name: 'Ebru', surname: 'Yıldız', phone: '555-678-9012' },
-    { id: '7', name: 'Fatih', surname: 'Kılıç', phone: '555-789-0123' },
-    { id: '8', name: 'Gül', surname: 'Doğan', phone: '555-890-1234' },
-    { id: '9', name: 'Hakan', surname: 'Aydın', phone: '555-901-2345' },
-    { id: '10', name: 'İpek', surname: 'Şahin', phone: '555-012-3456' },
-    { id: '11', name: 'Jale', surname: 'Kurt', phone: '555-123-4567' },
-    { id: '12', name: 'Kadir', surname: 'Erdoğan', phone: '555-234-5678' },
-    { id: '13', name: 'Lale', surname: 'Duru', phone: '555-345-6789' },
-    { id: '14', name: 'Mehmet', surname: 'Turan', phone: '555-456-7890' },
-    { id: '15', name: 'Nevin', surname: 'Bakır', phone: '555-567-8901' },
-    { id: '16', name: 'Ozan', surname: 'Taş', phone: '555-678-9012' },
-    { id: '17', name: 'Pınar', surname: 'Köse', phone: '555-789-0123' },
-    { id: '18', name: 'Rıdvan', surname: 'Kurtulmuş', phone: '555-890-1234' },
-    { id: '19', name: 'Sibel', surname: 'Arslan', phone: '555-901-2345' },
-    { id: '20', name: 'Tolga', surname: 'Can', phone: '555-012-3456' },
-    { id: '21', name: 'Uğur', surname: 'Gül', phone: '555-123-4567' },
-    { id: '22', name: 'Veli', surname: 'Toprak', phone: '555-234-5678' },
-    { id: '23', name: 'Yüksel', surname: 'Akar', phone: '555-345-6789' },
-    { id: '24', name: 'Zeynep', surname: 'Koç', phone: '555-456-7890' },
+  const [rehberData, setRehberData] = useState([]);
 
-  ]);
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://192.168.1.108:3000/contact', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization:
+              'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE',
+          },
+        });
+        console.log(response.data);
+        setRehberData(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const [firstName, setName] = useState('');
+  const [lastName, setSurname] = useState('');
   const [phone, setPhone] = useState('');
   const [searchText, setSearchText] = useState('');
-  const handleAddUser = () => {
-    if (!name || !surname || !phone) {
+
+  const handleAddUser = async () => {
+    if (!firstName || !lastName || !phone) {
       Alert.alert('Error', 'Please fill out all fields.');
       return;
     }
     const newUser = {
-      id: Math.random().toString(),
-      name,
-      surname,
-      phone,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
     };
-    const newData = [...rehberData, newUser];
 
-    newData.sort((a, b) => a.name.localeCompare(b.name));
-
-    setRehberData(newData);
-
-    setIsFormOpen(false);
-    setName('');
-    setSurname('');
-    setPhone('');
-    Alert.alert('Success', 'New contact added successfully.');
+    try {
+      const response = await axios.post(
+        'http://192.168.1.108:3000/contact/add',
+        newUser,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: jwtToken,
+          },
+        },
+      );
+      const {data} = response;
+      console.log(data);
+      getdatas();
+      const newData = [...rehberData, data];
+      newData.sort((a, b) => a.firstName.localeCompare(b.firstName));
+      setRehberData(newData);
+      setIsFormOpen(false);
+      setName('');
+      setSurname('');
+      setPhone('');
+      Alert.alert('Success', 'New contact added successfully.');
+    } catch (error) {
+      console.log('3 :', error);
+      Alert.alert('Error', 'Could not add contact. Please try again later.');
+    }
   };
+
   const handlePlusButtonPress = () => {
     setIsFormOpen(true);
   };
   const handleSearchTextChange = text => {
     setSearchText(text);
   };
-  const filteredData = rehberData.filter(item => {
-    const fullName = item.name + ' ' + item.surname;
-    return fullName.toLowerCase().includes(searchText.toLowerCase());
-  });
+
   const handleAlphabetPress = letter => {
-    const index = rehberData.findIndex(item => item.name.startsWith(letter));
+    const index = rehberData.findIndex(item =>
+      item.firstName.startsWith(letter),
+    );
     if (index !== -1) {
       flatListRef.current.scrollToIndex({index});
     }
   };
+
   const flatListRef = React.useRef();
   const [modalVisible, setModalVisible] = useState(false);
-  
+
+  const sortedData = rehberData.sort((a, b) =>
+    a.firstName.localeCompare(b.firstName),
+  );
+
+  const filteredData = sortedData.filter(item => {
+    const itemData = `${item.firstName.toUpperCase()} ${item.lastName.toUpperCase()}`;
+    const textData = searchText.toUpperCase();
+    return itemData.indexOf(textData) > -1;
+  });
 
   const handleDeleteUser = () => {
-    const newData = rehberData.filter(item => item.id !== modalData.id);
-    setRehberData(newData);
+    const filteredData = rehberData.filter(item => item.id !== modalData.id);
+
+    // yeni verileri ayarla
+    setRehberData(filteredData);
+
+    axios
+      .delete('http://192.168.1.108:3000/contact/delete', {
+        headers: {
+          Authorization: jwtToken,
+        },
+        data: {
+          id: modalData.id,
+        },
+      })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log('2 :', error);
+      });
+
+    // modali gizle
     setModalVisible(false);
   };
 
   const [modalData, setModalData] = useState({});
 
   const handleSaveChanges = () => {
-    const newData = rehberData.map(item => {
-      if (item.id === modalData.id) {
-        return modalData;
-      }
-      return item;
-    });
+    const index = rehberData.findIndex(item => item.id === modalData.id);
+    const newData = [...rehberData];
+    newData[index] = modalData;
     setRehberData(newData);
     setModalVisible(false);
   };
@@ -126,15 +168,14 @@ const PhoneBookScreen = () => {
       </TouchableOpacity>
 
       <View style={styles.itemLeft}>
-        <Text style={styles.itemText}>{item.name}</Text>
-        <Text style={styles.itemText}>{item.surname}</Text>
+        <Text style={styles.itemText}>{item.firstName}</Text>
+        <Text style={styles.itemText}>{item.lastName}</Text>
       </View>
       <View style={styles.itemRight}>
         <Text style={styles.itemText}>{item.phone}</Text>
       </View>
       <TouchableOpacity
         onPress={() => {
-          
           Linking.openURL(`tel:${item.phone}`);
         }}>
         <PhoneCallSvg width={width * 0.12} height={height * 0.06} />
@@ -146,7 +187,7 @@ const PhoneBookScreen = () => {
     <View style={styles.container}>
       <View style={styles.searchContainer}>
         <TextInput
-          placeholder="Search People..."
+          placeholder={`Search People ${rehberData?.length}`}
           value={searchText}
           onChangeText={handleSearchTextChange}
           style={styles.searchInput}
@@ -154,7 +195,7 @@ const PhoneBookScreen = () => {
         <TouchableOpacity
           onPress={() => setSearchText('')}
           style={{marginLeft: 10}}>
-          <AntDesign name="close" size={20} color="gray" />
+          <AntDesign firstName="close" size={20} color="gray" />
         </TouchableOpacity>
       </View>
 
@@ -164,13 +205,13 @@ const PhoneBookScreen = () => {
             <Text style={styles.modalHeaderText}>Add New Contact</Text>
             <TextInput
               placeholder="Name"
-              value={name}
+              value={firstName}
               onChangeText={setName}
               style={styles.modalInput}
             />
             <TextInput
               placeholder="Surname"
-              value={surname}
+              value={lastName}
               onChangeText={setSurname}
               style={styles.modalInput}
             />
@@ -184,7 +225,7 @@ const PhoneBookScreen = () => {
             <TouchableOpacity
               style={[styles.button, {backgroundColor: '#0476D0'}]}
               onPress={handleAddUser}>
-               <Text style={styles.buttonText}>Add User</Text>
+              <Text style={styles.buttonText}>Add User</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, {backgroundColor: 'gray'}]}
@@ -199,9 +240,11 @@ const PhoneBookScreen = () => {
         <FlatList
           ref={flatListRef}
           data={filteredData}
-          keyExtractor={item => item.id}
+          // keyExtractor={item => item.id}
           renderItem={renderItem}
-          ListEmptyComponent={<Text>No results found.</Text>}
+          ListEmptyComponent={
+            <Text style={styles.itemText}>No results found.</Text>
+          }
         />
         <View style={styles.alphabetListContainer}>
           {alphabet.split('').map(letter => (
@@ -226,14 +269,18 @@ const PhoneBookScreen = () => {
             <Text style={styles.modalHeaderText}>Contact Information</Text>
             <TextInput
               placeholder="Name"
-              value={modalData.name}
-              onChangeText={text => setModalData({...modalData, name: text})}
+              value={modalData.firstName}
+              onChangeText={text =>
+                setModalData({...modalData, firstName: text})
+              }
               style={styles.modalInput}
             />
             <TextInput
               placeholder="Surname"
-              value={modalData.surname}
-              onChangeText={text => setModalData({...modalData, surname: text})}
+              value={modalData.lastName}
+              onChangeText={text =>
+                setModalData({...modalData, lastName: text})
+              }
               style={styles.modalInput}
             />
             <TextInput
@@ -266,7 +313,8 @@ const PhoneBookScreen = () => {
       <TouchableOpacity
         style={styles.plusButton}
         onPress={handlePlusButtonPress}>
-        <AntDesign name="plus" size={24} color="#fff" />
+        {/* <AntDesign firstName="plus" size={24} color="#fff" /> */}
+        <Text style={styles.plusButtonText}>+</Text>
       </TouchableOpacity>
     </View>
   );
@@ -386,9 +434,10 @@ const styles = StyleSheet.create({
     width: width * 0.85,
     height: height * 0.08,
     backgroundColor: '#FFFFFF',
+    borderRadius: 16,
     borderBottomColor: '#000',
     borderBottomWidth: 1,
-    marginBottom: height * 0.01,
+    marginBottom: height * 0.008,
   },
   itemText: {
     fontSize: 18,
@@ -405,5 +454,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
+  },
+  plusButtonText: {
+    fontSize: 30,
+    color: '#FFFFFF',
   },
 });

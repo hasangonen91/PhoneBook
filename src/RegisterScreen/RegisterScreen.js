@@ -16,12 +16,17 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ContactSvg from '../../assets/Svg/contacts.svg';
+
 import axios from 'axios';
 
 const {width, height} = Dimensions.get('window');
 
-const LoginScreen = ({navigation}) => {
+const RegisterScreen = ({navigation}) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const validationSchema = yup.object().shape({
+    firstName: yup.string().required('First name is required'),
+    lastName: yup.string().required('Last name is required'),
     phone: yup
       .string()
       .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits')
@@ -34,19 +39,18 @@ const LoginScreen = ({navigation}) => {
 
   const handleLogin = async values => {
     try {
-      const response = await axios.post('http://192.168.1.108:3000/auth/sign_in', {
+      const response = await axios.post('http://192.168.1.108:3000/auth/register', {
+        firstName: values.firstName,
+        lastName: values.lastName,
         phone: values.phone,
         password: values.password,
       });
       console.log('Response:', response.data);
       navigation.navigate('PhoneBookScreen');
-
     } catch (error) {
       console.error('Error:', error);
     }
   };
-
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -54,13 +58,15 @@ const LoginScreen = ({navigation}) => {
       style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.helloHeader}>
-          <Text style={styles.welcomeText}>Phone Book!</Text>
+          <Text style={styles.welcomeText}>Join Phone Book!</Text>
           <ContactSvg width={width * 0.15} height={height * 0.1} />
         </View>
 
         <Formik
           initialValues={{
-            email: '',
+            firstName: '',
+            lastName: '',
+            phone: '',
             password: '',
           }}
           onSubmit={handleLogin}
@@ -75,6 +81,30 @@ const LoginScreen = ({navigation}) => {
           }) => (
             <>
               <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="First Name"
+                  value={values.firstName}
+                  onChangeText={handleChange('firstName')}
+                  onBlur={handleBlur('firstName')}
+                  autoCapitalize="words"
+                />
+                {touched.firstName && errors.firstName && (
+                  <Text style={styles.error}>{errors.firstName}</Text>
+                )}
+
+                <TextInput
+                  style={styles.input}
+                  placeholder="Last Name"
+                  value={values.lastName}
+                  onChangeText={handleChange('lastName')}
+                  onBlur={handleBlur('lastName')}
+                  autoCapitalize="words"
+                />
+                {touched.lastName && errors.lastName && (
+                  <Text style={styles.error}>{errors.lastName}</Text>
+                )}
+
                 <TextInput
                   style={styles.input}
                   placeholder="Phone Number"
@@ -114,10 +144,8 @@ const LoginScreen = ({navigation}) => {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     style={styles.button}
-                      onPress={handleSubmit}
-                   // onPress={() => navigation.navigate('PhoneBookScreen')}
-                    >
-                    <Text style={styles.buttonText}>Login</Text>
+                    onPress={handleSubmit}>
+                    <Text style={styles.buttonText}>Register</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -129,7 +157,7 @@ const LoginScreen = ({navigation}) => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -144,7 +172,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inputContainer: {
-    height: height * 0.35,
+    height: height * 0.45,
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'center',
