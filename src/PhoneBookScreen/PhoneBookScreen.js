@@ -28,25 +28,25 @@ const PhoneBookScreen = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [rehberData, setRehberData] = useState([]);
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://192.168.1.108:3000/contact', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE',
+        },
+      });
+      setRehberData(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://192.168.1.108:3000/contact', {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization:
-              'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE',
-          },
-        });
-        console.log(response.data);
-        setRehberData(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     fetchData();
   }, []);
-
+  
   const [firstName, setName] = useState('');
   const [lastName, setSurname] = useState('');
   const [phone, setPhone] = useState('');
@@ -119,28 +119,22 @@ const PhoneBookScreen = () => {
     return itemData.indexOf(textData) > -1;
   });
 
-  const handleDeleteUser = () => {
-    axios
-      .delete('http://192.168.1.108:3000/contact/delete', {
+
+  
+  const handleDeleteUser = async (id) => {
+    try {
+      await axios.delete(`http://192.168.1.108:3000/contact/delete?id=${id}`, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: jwtToken,
         },
-        data: {
-          id: modalData.id,
-        },
-      })
-      .then(response => {
-        console.log(response.data);
-  
-        const filteredData = rehberData.filter(item => item.id !== modalData.id);
-        setRehberData(filteredData);
-      })
-      .catch(error => {
-        console.log('2 :', error);
       });
-  
-    // modali gizle
-    setModalVisible(false);
+      const newData = rehberData.filter((item) => item.id !== id);
+      setRehberData(newData);
+      setModalVisible(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
   
   
