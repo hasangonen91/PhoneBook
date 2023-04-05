@@ -1,0 +1,269 @@
+{
+	"info": {
+		"_postman_id": "4e216bc1-bf3f-48b8-9262-f31e1687c7a5",
+		"name": "test123",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17311668"
+	},
+	"item": [
+		{
+			"name": "register",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"yasin\",\n    \"lastName\": \"akyuz\",\n    \"phone\": \"1232131\",\n    \"password\": \"testyasin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone\": \"1232131\",\n    \"password\": \"testyasin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/auth/sign_in",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"sign_in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "profile",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/profile",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "contact",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/contact",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addContact",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"hasan\",\n    \"lastName\": \"gonen\",\n    \"phone\": \"051231312\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/contact/add",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contact",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateContact",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/contact/put",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contact",
+						"put"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteContact",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzIxMzEiLCJmaXJzdE5hbWUiOiJ5YXNpbiIsImxhc3ROYW1lIjoiYWt5dXoiLCJfaWQiOiI2NDJjN2VlYzZhNDE3N2Y0YzkzM2M2ZjIiLCJpYXQiOjE2ODA2ODg2MDB9.z9OOlpCX_TQTPYgnTwOkTdH7SKtPKAGwTbrzSXpW6xE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"642c8559155ee55b6a5f9d27\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/contact/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contact",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
