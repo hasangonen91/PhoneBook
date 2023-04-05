@@ -76,7 +76,6 @@ const PhoneBookScreen = () => {
       );
       const {data} = response;
       console.log(data);
-      getdatas();
       const newData = [...rehberData, data];
       newData.sort((a, b) => a.firstName.localeCompare(b.firstName));
       setRehberData(newData);
@@ -114,18 +113,13 @@ const PhoneBookScreen = () => {
     a.firstName.localeCompare(b.firstName),
   );
 
-  const filteredData = sortedData.filter(item => {
+  const searchdData = sortedData.filter(item => {
     const itemData = `${item.firstName.toUpperCase()} ${item.lastName.toUpperCase()}`;
     const textData = searchText.toUpperCase();
     return itemData.indexOf(textData) > -1;
   });
 
   const handleDeleteUser = () => {
-    const filteredData = rehberData.filter(item => item.id !== modalData.id);
-
-    // yeni verileri ayarla
-    setRehberData(filteredData);
-
     axios
       .delete('http://192.168.1.108:3000/contact/delete', {
         headers: {
@@ -137,14 +131,20 @@ const PhoneBookScreen = () => {
       })
       .then(response => {
         console.log(response.data);
+  
+        const filteredData = rehberData.filter(item => item.id !== modalData.id);
+        setRehberData(filteredData);
       })
       .catch(error => {
         console.log('2 :', error);
       });
-
+  
     // modali gizle
     setModalVisible(false);
   };
+  
+  
+  
 
   const [modalData, setModalData] = useState({});
 
@@ -239,8 +239,8 @@ const PhoneBookScreen = () => {
       <View style={styles.alphabetContainer}>
         <FlatList
           ref={flatListRef}
-          data={filteredData}
-          // keyExtractor={item => item.id}
+          data={searchdData}
+          keyExtractor={item => item.id}
           renderItem={renderItem}
           ListEmptyComponent={
             <Text style={styles.itemText}>No results found.</Text>
@@ -313,7 +313,6 @@ const PhoneBookScreen = () => {
       <TouchableOpacity
         style={styles.plusButton}
         onPress={handlePlusButtonPress}>
-        {/* <AntDesign firstName="plus" size={24} color="#fff" /> */}
         <Text style={styles.plusButtonText}>+</Text>
       </TouchableOpacity>
     </View>
