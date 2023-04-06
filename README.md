@@ -2,10 +2,15 @@
 Phone-Book-Case
 
 hasanapp:Run
+
 node server.js
 
 phonebook: Run 
-yarn install
+
+yarn install 
+
+and
+
 npx react-native run-android
 
 ## Get Started
