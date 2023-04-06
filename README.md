@@ -1,6 +1,13 @@
 # PhoneBook
 Phone-Book-Case
 
+hasanapp:Run
+node server.js
+
+phonebook: Run 
+yarn install
+npx react-native run-android
+
 ## Get Started
 
 <img src="https://user-images.githubusercontent.com/45069041/230093098-c45c1dff-f968-412d-afe4-9440e8afee4e.jpeg" width="170">
